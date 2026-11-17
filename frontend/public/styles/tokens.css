@@ -1,0 +1,24 @@
+:root {
+  --paper: #f5f6fa;
+  --surface: #ffffff;
+  --ink: #161a2e;
+  --muted: #5b6078;
+  --line: #dfe2ee;
+  --blue: #3d3bf3;
+  --blue-dark: #2928c4;
+  --amber: #ffb547;
+  --amber-soft: #fff1d6;
+  --green: #0f6b47;
+  --green-soft: #def4ea;
+  --red: #a8223b;
+  --red-soft: #fbe3e8;
+  --radius: 14px;
+  --radius-small: 8px;
+  --shadow: 0 1px 2px rgba(22, 26, 46, 0.06), 0 8px 24px rgba(22, 26, 46, 0.06);
+  --font-body: "Segoe UI", "Helvetica Neue", Arial, system-ui, sans-serif;
+  --font-display: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  --step-0: 1rem;
+  --step-1: 1.125rem;
+  --step-2: 1.5rem;
+  --step-3: clamp(1.9rem, 4vw, 2.75rem);
+}

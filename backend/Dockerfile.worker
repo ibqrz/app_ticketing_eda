@@ -1,0 +1,17 @@
+FROM python:3.12-slim
+
+ARG SERVICE
+ARG ENTRY
+
+ENV PYTHONUNBUFFERED=1
+ENV ENTRY=${ENTRY}
+
+WORKDIR /app
+
+COPY common/requirements.txt requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY common ./common
+COPY ${SERVICE}/ .
+
+CMD ["sh", "-c", "exec python ${ENTRY}"]

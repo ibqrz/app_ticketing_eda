@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48" role="img" aria-label="[logo do projeto]">
+  <rect x="2" y="2" width="44" height="44" rx="10" fill="#ffffff" stroke="#3d3bf3" stroke-width="2" stroke-dasharray="5 4"/>
+  <path d="M12 19a3 3 0 0 0 0 6v4h24v-4a3 3 0 0 1 0-6v-4H12z" fill="#3d3bf3"/>
+  <path d="M30 15v14" stroke="#ffffff" stroke-width="2" stroke-dasharray="2 2"/>
+</svg>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>[nome do projeto]</title>
+  <link rel="icon" href="assets/logo-placeholder.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles/tokens.css">
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="styles/layout.css">
+  <link rel="stylesheet" href="styles/components.css">
+</head>
+<body>
+  <a class="skip" href="#events">Ir para os eventos</a>
+
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <a class="brand" href="#top">
+        <img class="brand-logo" data-brand-logo src="assets/logo-placeholder.svg" alt="[logo do projeto]" width="40" height="40">
+        <span class="brand-name" data-brand-name>[nome do projeto]</span>
+      </a>
+      <nav class="nav" aria-label="Principal">
+        <a href="#events">Eventos</a>
+        <a href="#orders">Pedidos recentes</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero wrap">
+      <h1>Garanta seu lugar no próximo evento</h1>
+      <p class="lead">Escolha o ingresso, finalize a compra e acompanhe cada etapa do pedido enquanto ele é processado.</p>
+    </section>
+
+    <section id="events" class="wrap section" aria-labelledby="events-title">
+      <h2 id="events-title">Eventos em cartaz</h2>
+      <div id="catalog" class="catalog" aria-live="polite"></div>
+    </section>
+
+    <section id="orders" class="wrap section" aria-labelledby="orders-title">
+      <h2 id="orders-title">Pedidos recentes</h2>
+      <div class="table-scroll">
+        <table class="orders">
+          <thead>
+            <tr>
+              <th scope="col">Pedido</th>
+              <th scope="col">Ingresso</th>
+              <th scope="col">Total</th>
+              <th scope="col">Situação</th>
+              <th scope="col">Pagamento processado por</th>
+              <th scope="col">Horário</th>
+            </tr>
+          </thead>
+          <tbody id="orders-body"></tbody>
+        </table>
+      </div>
+      <p id="orders-empty" class="empty" hidden>Nenhum pedido ainda. Escolha um ingresso acima para começar.</p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap">
+      <span data-brand-name>[nome do projeto]</span>
+    </div>
+  </footer>
+
+  <dialog id="checkout" class="checkout" aria-labelledby="checkout-title">
+    <div class="checkout-head">
+      <div>
+        <h2 id="checkout-title">Finalizar compra</h2>
+        <p id="checkout-summary" class="muted"></p>
+      </div>
+      <button type="button" class="icon-button" id="checkout-close" aria-label="Fechar">&times;</button>
+    </div>
+
+    <form id="checkout-form">
+      <label class="field">
+        <span>Quantidade</span>
+        <input type="number" name="quantity" min="1" max="20" value="1" required>
+      </label>
+      <label class="field">
+        <span>Nome completo</span>
+        <input type="text" name="customer_name" minlength="2" maxlength="120" autocomplete="name" required>
+      </label>
+      <label class="field">
+        <span>E-mail</span>
+        <input type="email" name="customer_email" autocomplete="email" placeholder="voce@exemplo.com.br" required>
+      </label>
+      <div class="total-row">
+        <span>Total</span>
+        <strong id="checkout-total">R$ 0,00</strong>
+      </div>
+      <p id="checkout-error" class="form-error" role="alert" hidden></p>
+      <button type="submit" class="button primary block" id="checkout-submit">Comprar ingressos</button>
+    </form>
+
+    <section id="tracker" class="tracker" aria-live="polite" hidden>
+      <div class="tracker-status">
+        <span class="pulse" id="tracker-pulse"></span>
+        <div>
+          <h3 id="tracker-title"></h3>
+          <p id="tracker-detail" class="muted"></p>
+        </div>
+      </div>
+      <ol id="tracker-steps" class="steps"></ol>
+      <button type="button" class="button block" id="tracker-done" hidden>Fechar</button>
+    </section>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+  <script type="module" src="scripts/main.js"></script>
+</body>
+</html>

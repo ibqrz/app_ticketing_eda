@@ -1,0 +1,105 @@
+name: ticketing
+
+x-app-env: &app-env
+  PROJECT_NAME: ${PROJECT_NAME}
+  DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+  RABBITMQ_URL: amqp://${RABBITMQ_USER}:${RABBITMQ_PASSWORD}@rabbitmq:5672/%2F
+  PAYMENT_LIMIT: ${PAYMENT_LIMIT}
+  PROCESSING_DELAY: ${PROCESSING_DELAY}
+  PREFETCH_COUNT: ${PREFETCH_COUNT}
+  CORS_ORIGINS: ${CORS_ORIGINS}
+
+x-depends: &depends
+  postgres:
+    condition: service_healthy
+  rabbitmq:
+    condition: service_healthy
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./infra/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+  rabbitmq:
+    image: rabbitmq:3.13-management-alpine
+    hostname: rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD}
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 10s
+      timeout: 10s
+      retries: 12
+
+  api:
+    build:
+      context: ./backend
+      dockerfile: api/Dockerfile
+    environment: *app-env
+    ports:
+      - "8000:8000"
+    depends_on: *depends
+    restart: on-failure
+
+  inventory-service:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.worker
+      args:
+        SERVICE: inventory
+        ENTRY: inventory_service.py
+    environment: *app-env
+    depends_on: *depends
+    restart: on-failure
+
+  payment-service:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.worker
+      args:
+        SERVICE: payment
+        ENTRY: payment_service.py
+    environment: *app-env
+    depends_on: *depends
+    restart: on-failure
+
+  notification-service:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.worker
+      args:
+        SERVICE: notification
+        ENTRY: notification_service.py
+    environment: *app-env
+    depends_on: *depends
+    restart: on-failure
+
+  frontend:
+    image: nginx:1.27-alpine
+    volumes:
+      - ./frontend/public:/usr/share/nginx/html:ro
+    ports:
+      - "8080:80"
+    depends_on:
+      - api
+
+volumes:
+  postgres_data:
+  rabbitmq_data:
