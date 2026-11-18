@@ -27,8 +27,10 @@
 
 .ticket-stub {
   position: relative;
-  border-left: 2px dashed var(--line);
+  border-left: 2px dashed #cfc66a;
   padding: 12px 20px;
+  background: var(--yellow-soft);
+  border-radius: 0 var(--radius) var(--radius) 0;
 }
 
 .ticket-stub::before,
@@ -39,7 +41,7 @@
   width: 20px;
   height: 20px;
   background: var(--paper);
-  border: 1px solid var(--line);
+  border: 1px solid #cfc66a;
   border-radius: 50%;
 }
 
@@ -62,7 +64,7 @@
 }
 
 .stub-row + .stub-row {
-  border-top: 1px solid var(--line);
+  border-top: 1px solid rgba(16, 34, 63, 0.14);
 }
 
 .stub-row > div:first-child {
@@ -93,7 +95,8 @@
 
   .ticket-stub {
     border-left: 0;
-    border-top: 2px dashed var(--line);
+    border-top: 2px dashed #cfc66a;
+    border-radius: 0 0 var(--radius) var(--radius);
   }
 
   .ticket-stub::before,
@@ -213,7 +216,7 @@
 }
 
 .badge.processing {
-  background: var(--amber-soft);
+  background: var(--yellow);
   color: var(--ink);
 }
 
@@ -240,11 +243,11 @@
   color: var(--ink);
   border: 0;
   border-radius: var(--radius);
-  box-shadow: 0 24px 64px rgba(22, 26, 46, 0.35);
+  box-shadow: 0 24px 64px rgba(16, 34, 63, 0.35);
 }
 
 .checkout::backdrop {
-  background: rgba(22, 26, 46, 0.55);
+  background: rgba(16, 34, 63, 0.55);
 }
 
 .checkout-head {
@@ -320,25 +323,28 @@
   width: 20px;
   height: 20px;
   margin-top: 4px;
-  background: var(--amber);
+  background: var(--yellow);
+  border: 2px solid var(--ink);
   border-radius: 50%;
 }
 
 .pulse.active::after {
   content: "";
   position: absolute;
-  inset: -6px;
-  border: 2px solid var(--amber);
+  inset: -8px;
+  border: 2px solid var(--blue);
   border-radius: 50%;
   animation: ring 1.4s ease-out infinite;
 }
 
 .pulse.confirmed {
   background: var(--green);
+  border-color: var(--green);
 }
 
 .pulse.refused {
   background: var(--red);
+  border-color: var(--red);
 }
 
 @keyframes ring {

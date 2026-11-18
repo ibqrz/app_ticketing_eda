@@ -5,7 +5,7 @@ from decimal import Decimal
 
 class Settings:
     def __init__(self):
-        self.project_name = os.getenv("PROJECT_NAME", "[nome do projeto]")
+        self.project_name = os.getenv("PROJECT_NAME", "Voucher")
         self.database_url = os.environ["DATABASE_URL"]
         self.rabbitmq_url = os.environ["RABBITMQ_URL"]
         self.payment_limit = Decimal(os.getenv("PAYMENT_LIMIT", "5000.00"))
