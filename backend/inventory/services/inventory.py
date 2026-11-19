@@ -12,14 +12,16 @@ class InventoryService:
 
     def reserve(self, event):
         status = self.repository.reserve(
-            event.order_id, event.ticket_type_id, event.quantity
+            event.order_id, event.ticket_id, event.quantity
         )
         key = STOCK_SOLD_OUT if status == "SOLD_OUT" else STOCK_RESERVED
         logger.info("order %s stock %s", event.order_id, status)
         self.publisher.publish(key, event.to_dict())
 
     def confirm(self, event):
-        self.repository.confirm(event.order_id)
+        self.repository.confirm(
+            event.order_id, event.user_id, event.ticket_id, event.quantity
+        )
         logger.info("order %s stock confirmed", event.order_id)
 
     def release(self, event):

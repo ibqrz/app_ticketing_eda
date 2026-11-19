@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Voucher</title>
+  <link rel="icon" href="assets/voucher.ico" type="image/x-icon">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Raleway:wght@600;700;800&display=swap">
+  <link rel="stylesheet" href="styles/tokens.css">
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="styles/layout.css">
+  <link rel="stylesheet" href="styles/components.css">
+  <link rel="stylesheet" href="styles/cards.css">
+</head>
+<body>
+  <a class="skip" href="#content">Ir para o conteúdo</a>
+  <header class="topbar" id="app-header"></header>
+
+  <main id="content" class="wrap section">
+    <div class="page-head">
+      <h1>Meus ingressos</h1>
+    </div>
+
+    <div class="tabs" role="tablist" aria-label="Meus ingressos">
+      <button type="button" class="tab" role="tab" id="tab-orders" aria-controls="panel-orders" aria-selected="true">
+        Meus pedidos <span class="count" id="count-orders" hidden></span>
+      </button>
+      <button type="button" class="tab" role="tab" id="tab-tracking" aria-controls="panel-tracking" aria-selected="false">
+        Acompanhar processamento <span class="count" id="count-tracking" hidden></span>
+      </button>
+    </div>
+
+    <section class="tab-panel" role="tabpanel" id="panel-orders" aria-labelledby="tab-orders">
+      <div id="orders-empty" hidden></div>
+      <div id="active-block">
+        <h2 class="line-title">Ativos</h2>
+        <div class="grid" id="grid-active"></div>
+      </div>
+      <div id="inactive-block">
+        <h2 class="line-title">Inativos</h2>
+        <div class="grid" id="grid-inactive"></div>
+      </div>
+    </section>
+
+    <section class="tab-panel" role="tabpanel" id="panel-tracking" aria-labelledby="tab-tracking" hidden>
+      <div class="grid wide" id="grid-tracking"></div>
+    </section>
+  </main>
+
+  <footer class="footer" id="app-footer"></footer>
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  <script type="module" src="scripts/pages/orders.js"></script>
+</body>
+</html>

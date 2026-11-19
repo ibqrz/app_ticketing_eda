@@ -25,7 +25,8 @@ class NotificationService:
         if key == ORDER_CREATED:
             return (
                 f"Olá, {name}! Recebemos seu pedido de {event.quantity} "
-                f"ingresso(s) no {settings.project_name} e já estamos processando."
+                f"ingresso(s) {event.ticket_type} no {settings.project_name} "
+                f"e já estamos processando."
             )
         if key == PAYMENT_APPROVED:
             return f"Pagamento aprovado, {name}! Seus ingressos estão confirmados."

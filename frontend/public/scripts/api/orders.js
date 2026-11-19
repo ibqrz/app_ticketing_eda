@@ -5,4 +5,5 @@ export const createOrder = (data) =>
 
 export const getOrder = (id) => request(`/api/orders/${id}`);
 
-export const listOrders = (limit = 10) => request(`/api/orders?limit=${limit}`);
+export const listOrders = (scope = "purchased", limit = 10) =>
+  request(`/api/orders?scope=${scope}&limit=${limit}`);

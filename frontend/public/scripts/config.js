@@ -6,4 +6,7 @@ export const config = {
   pollMs: 1500,
   pollMax: 40,
   refreshMs: 3000,
+  ticketsMs: 10000,
+  trackMs: 2000,
+  homeOrders: 5,
 };

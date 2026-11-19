@@ -15,7 +15,9 @@ PAYMENT_REFUSED = "payment.refused"
 @dataclass(frozen=True)
 class OrderEvent:
     order_id: str
-    ticket_type_id: int
+    user_id: int
+    ticket_id: int
+    ticket_type: str
     quantity: int
     total: Decimal
     customer_name: str
@@ -29,7 +31,9 @@ class OrderEvent:
         try:
             event = cls(
                 order_id=str(UUID(str(payload["order_id"]))),
-                ticket_type_id=int(payload["ticket_type_id"]),
+                user_id=int(payload["user_id"]),
+                ticket_id=int(payload["ticket_id"]),
+                ticket_type=str(payload["ticket_type"]).strip(),
                 quantity=int(payload["quantity"]),
                 total=Decimal(str(payload["total"])),
                 customer_name=str(payload["customer_name"]).strip(),
@@ -42,12 +46,12 @@ class OrderEvent:
         return event
 
     def check(self):
-        if self.quantity < 1 or self.ticket_type_id < 1:
-            raise InvalidMessageError("quantity and ticket_type_id must be positive")
+        if self.quantity < 1 or self.ticket_id < 1 or self.user_id < 1:
+            raise InvalidMessageError("quantity, ticket_id and user_id must be positive")
         if not self.total.is_finite() or self.total <= 0:
             raise InvalidMessageError("total must be a positive number")
-        if not self.customer_name or not self.customer_email:
-            raise InvalidMessageError("customer data is required")
+        if not self.ticket_type or not self.customer_name or not self.customer_email:
+            raise InvalidMessageError("ticket type and customer data are required")
 
     def to_dict(self):
         data = asdict(self)
