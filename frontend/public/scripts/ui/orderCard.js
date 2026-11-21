@@ -8,7 +8,7 @@ export function orderCard(order) {
   return h(
     "article",
     { class: `card order-card${order.active ? "" : " is-inactive"}` },
-    cover(order.ticket_id, order.image, "wide"),
+    cover(order.image, "wide"),
     h(
       "div",
       { class: "card-body" },

@@ -11,7 +11,7 @@ export function orderRow(order) {
   return h(
     "article",
     { class: `card row-card${order.active ? "" : " is-inactive"}` },
-    cover(order.ticket_id, order.image, "thumb"),
+    cover(order.image, "thumb"),
     h(
       "div",
       { class: "row-main" },

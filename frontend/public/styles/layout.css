@@ -9,6 +9,10 @@
   max-width: 820px;
 }
 
+.wrap.wide {
+  max-width: 1520px;
+}
+
 .topbar {
   position: sticky;
   top: 0;
@@ -81,6 +85,28 @@
 .nav a[aria-current="page"] {
   background: var(--tint);
   color: var(--blue);
+}
+
+.nav a.avatar {
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  margin-inline: 6px;
+  padding: 0;
+  color: #ffffff;
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+  transition: box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+.nav a.avatar:hover {
+  color: #ffffff;
+  filter: brightness(1.12);
+}
+
+.nav a.avatar[aria-current="page"] {
+  color: #ffffff;
+  box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--blue);
 }
 
 .hero {

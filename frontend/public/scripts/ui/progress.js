@@ -71,7 +71,7 @@ export function progressCard(order) {
     h(
       "div",
       { class: "progress-head" },
-      cover(order.ticket_id, order.image, "thumb"),
+      cover(order.image, "thumb"),
       h(
         "div",
         {},

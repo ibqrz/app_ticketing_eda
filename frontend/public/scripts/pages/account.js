@@ -1,13 +1,17 @@
 import { changePassword, getAccount, updateAccount } from "../api/account.js";
 import { goLogin, isLogged, updateUser } from "../state/session.js";
 import { find } from "../ui/dom.js";
+import { mountFields } from "../ui/field.js";
 import { renderLayout } from "../ui/layout.js";
+import { mountRules } from "../ui/rules.js";
 import { toast } from "../ui/toast.js";
 
-renderLayout("account", "Conta");
+renderLayout("account", "Minha conta");
+mountFields();
 
 const profile = find("#profile-form");
 const password = find("#password-form");
+const valid = mountRules(password.elements.new_password, find("#password-rules"));
 
 function show(node, text) {
   node.textContent = text;
@@ -53,6 +57,10 @@ async function savePassword(event) {
   find("#password-error").hidden = true;
   find("#password-success").hidden = true;
   const form = password.elements;
+  if (!valid()) {
+    show(find("#password-error"), "A nova senha não atende a todos os requisitos.");
+    return;
+  }
   if (form.new_password.value !== form.confirm_password.value) {
     show(find("#password-error"), "A confirmação da nova senha não confere.");
     return;

@@ -1,6 +1,8 @@
 import { createOrder, getOrder } from "../api/orders.js";
 import { config } from "../config.js";
-import { user } from "../state/session.js";
+import { goLogin, isLogged } from "../state/session.js";
+import { cover } from "./cover.js";
+import { detail } from "./detail.js";
 import { find, h } from "./dom.js";
 import { money, reasonLabel } from "./format.js";
 import { headline, stepper } from "./progress.js";
@@ -8,7 +10,10 @@ import { headline, stepper } from "./progress.js";
 const nodes = {
   dialog: find("#checkout"),
   form: find("#checkout-form"),
-  summary: find("#checkout-summary"),
+  scroll: find(".checkout-scroll"),
+  banner: find("#checkout-banner"),
+  info: find("#checkout-info"),
+  notice: find("#checkout-notice"),
   types: find("#checkout-types"),
   total: find("#checkout-total"),
   error: find("#checkout-error"),
@@ -110,6 +115,7 @@ async function poll(id, attempt) {
 }
 
 function track(accepted) {
+  nodes.info.querySelector(".checkout-details").hidden = true;
   nodes.form.hidden = true;
   nodes.tracker.hidden = false;
   nodes.done.hidden = true;
@@ -123,6 +129,10 @@ function track(accepted) {
 
 async function submit(event) {
   event.preventDefault();
+  if (!isLogged()) {
+    goLogin();
+    return;
+  }
   nodes.error.hidden = true;
   nodes.submit.disabled = true;
   try {
@@ -143,11 +153,20 @@ export function openCheckout(selectedTicket, onChange) {
   nodes.form.hidden = false;
   nodes.tracker.hidden = true;
   nodes.error.hidden = true;
-  nodes.summary.textContent = `${ticket.name}. Comprando como ${user()?.name ?? "visitante"}.`;
+  nodes.banner.replaceChildren(cover(ticket.image, "banner"));
+  nodes.info.replaceChildren(...detail(ticket));
   nodes.types.replaceChildren(
     h("legend", {}, "Tipo de ingresso"),
     ...ticket.types.map(option),
   );
+  const buyable = !ticket.sold_out && ticket.open;
+  nodes.notice.textContent = ticket.sold_out ? "Ingressos esgotados." : "As vendas deste evento foram encerradas.";
+  nodes.notice.hidden = buyable;
+  nodes.form.querySelectorAll("input, button[type=submit]").forEach((node) => {
+    node.disabled = !buyable;
+  });
+  nodes.submit.textContent = isLogged() ? "Comprar ingressos" : "Entrar para comprar";
+  nodes.scroll.scrollTop = 0;
   updateTotal();
   nodes.dialog.showModal();
 }
@@ -157,3 +176,8 @@ nodes.form.elements.quantity.addEventListener("input", updateTotal);
 nodes.close.addEventListener("click", () => nodes.dialog.close());
 nodes.done.addEventListener("click", () => nodes.dialog.close());
 nodes.dialog.addEventListener("close", stop);
+nodes.dialog.addEventListener("click", (event) => {
+  if (event.target === nodes.dialog) {
+    nodes.dialog.close();
+  }
+});

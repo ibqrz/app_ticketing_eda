@@ -1,6 +1,7 @@
 import { logout } from "../api/auth.js";
 import { config } from "../config.js";
-import { clear, isLogged } from "../state/session.js";
+import { clear, isLogged, user } from "../state/session.js";
+import { avatar } from "./avatar.js";
 import { find, h } from "./dom.js";
 import { icon } from "./icons.js";
 
@@ -9,7 +10,6 @@ const HOME = { key: "home", href: "index.html", label: "Eventos", icon: "calenda
 const LOGGED = [
   HOME,
   { key: "orders", href: "orders.html", label: "Meus ingressos", icon: "ticket" },
-  { key: "account", href: "account.html", label: "Conta", icon: "user" },
 ];
 
 const GUEST = [HOME, { key: "login", href: "login.html", label: "Entrar", icon: "login" }];
@@ -46,7 +46,7 @@ function exit() {
 }
 
 export function renderLayout(active, title) {
-  document.title = title ? `${title} | ${config.brandName}` : config.brandName;
+  document.title = title ? `${config.brandName} | ${title}` : config.brandName;
   const logged = isLogged();
   const items = (logged ? LOGGED : GUEST).map((item) => link(item, active));
   find("#app-header").replaceChildren(
@@ -64,7 +64,13 @@ export function renderLayout(active, title) {
         }),
         h("span", { class: "brand-name" }, config.brandName),
       ),
-      h("nav", { class: "nav", "aria-label": "Principal" }, items, logged ? exit() : null),
+      h(
+        "nav",
+        { class: "nav", "aria-label": "Principal" },
+        items,
+        logged ? avatar(user(), active === "account") : null,
+        logged ? exit() : null,
+      ),
     ),
   );
   find("#app-footer").replaceChildren(

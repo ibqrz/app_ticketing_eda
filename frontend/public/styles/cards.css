@@ -93,7 +93,8 @@
   place-items: center;
   overflow: hidden;
   aspect-ratio: 16 / 10;
-  color: rgba(255, 255, 255, 0.55);
+  background: var(--gray-soft);
+  color: #b4bdd0;
 }
 
 .cover img {
@@ -104,24 +105,8 @@
   object-fit: cover;
 }
 
-.cover.tone-0 {
-  background: linear-gradient(135deg, #1c63d9, #6c9cfc);
-}
-
-.cover.tone-1 {
-  background: linear-gradient(135deg, #6c9cfc, #f4ec74);
-}
-
-.cover.tone-2 {
-  background: linear-gradient(135deg, #10223f, #1c63d9);
-}
-
-.cover.tone-3 {
-  background: linear-gradient(135deg, #f4e05c, #6c9cfc);
-}
-
-.cover.tone-4 {
-  background: linear-gradient(135deg, #0a9bff, #1c63d9);
+.cover.banner {
+  aspect-ratio: 21 / 8;
 }
 
 .cover.wide {
@@ -179,6 +164,7 @@
 }
 
 .ribbon {
+  pointer-events: none;
   position: absolute;
   top: 0;
   right: 0;
@@ -202,7 +188,7 @@
 
 .carousel-track {
   display: flex;
-  gap: 22px;
+  gap: 24px;
   margin-inline: -4px;
   padding: 6px 4px 28px;
   overflow-x: auto;
@@ -216,7 +202,7 @@
 
 .carousel-item {
   display: flex;
-  flex: 0 0 min(330px, 84%);
+  flex: 0 0 min(380px, 84%);
   scroll-snap-align: start;
 }
 
@@ -419,5 +405,47 @@
 
   .cover.thumb {
     width: 72px;
+  }
+}
+
+.card-open {
+  padding: 0;
+  background: none;
+  border: 0;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.card-open::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+}
+
+.card:has(.card-open:focus-visible) {
+  outline: 3px solid var(--blue);
+  outline-offset: 2px;
+}
+
+.card-open:focus-visible {
+  outline: none;
+}
+
+.card-foot .button {
+  position: relative;
+  z-index: 3;
+}
+
+.ticket-card {
+  cursor: pointer;
+}
+
+@media (max-width: 560px) {
+  .cover.banner {
+    aspect-ratio: 16 / 9;
   }
 }

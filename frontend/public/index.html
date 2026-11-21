@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Voucher</title>
+  <title>Voucher | Ingressos</title>
   <link rel="icon" href="assets/voucher.ico" type="image/x-icon">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,7 +23,7 @@
       <h1>Garanta seu lugar no próximo evento</h1>
     </section>
 
-    <section class="wrap section" aria-labelledby="events-title">
+    <section class="wrap wide section" aria-labelledby="events-title">
       <div class="section-head">
         <h2 id="events-title">Eventos disponíveis</h2>
       </div>
@@ -44,45 +44,48 @@
   </main>
 
   <dialog id="checkout" class="checkout" aria-labelledby="checkout-title">
-    <div class="checkout-head">
-      <div>
-        <h2 id="checkout-title">Finalizar compra</h2>
-        <p id="checkout-summary" class="muted"></p>
-      </div>
-      <button type="button" class="icon-button" id="checkout-close" aria-label="Fechar">&times;</button>
-    </div>
+    <button type="button" class="checkout-close" id="checkout-close" aria-label="Fechar">&times;</button>
+    <div class="checkout-scroll">
+    <div id="checkout-banner"></div>
 
-    <form id="checkout-form">
-      <fieldset class="types" id="checkout-types">
-        <legend>Tipo de ingresso</legend>
-      </fieldset>
-      <label class="field">
-        <span>Quantidade</span>
-        <input type="number" name="quantity" min="1" max="20" value="1" required>
-      </label>
-      <div class="total-row">
-        <span>Total</span>
-        <strong id="checkout-total">R$ 0,00</strong>
-      </div>
-      <p id="checkout-error" class="form-error" role="alert" hidden></p>
-      <button type="submit" class="button primary block" id="checkout-submit">Comprar ingressos</button>
-    </form>
+    <div class="checkout-body">
+      <div id="checkout-info"></div>
 
-    <section id="tracker" aria-live="polite" hidden>
-      <div class="tracker-status">
-        <span class="pulse" id="tracker-pulse"></span>
-        <div>
-          <h3 id="tracker-title"></h3>
-          <p id="tracker-detail" class="muted"></p>
+      <form id="checkout-form">
+        <h3 class="checkout-subtitle">Adquirir ingresso</h3>
+        <p id="checkout-notice" class="checkout-notice" role="status" hidden></p>
+        <fieldset class="types" id="checkout-types">
+          <legend>Tipo de ingresso</legend>
+        </fieldset>
+        <label class="field">
+          <span>Quantidade</span>
+          <input type="number" name="quantity" min="1" max="20" value="1" required>
+        </label>
+        <div class="total-row">
+          <span>Total</span>
+          <strong id="checkout-total">R$ 0,00</strong>
         </div>
-      </div>
-      <div id="tracker-stepper"></div>
-      <ol id="tracker-steps" class="steps"></ol>
-      <div class="dialog-actions">
-        <a class="button" href="orders.html#tracking">Acompanhar processamento</a>
-        <button type="button" class="button primary" id="tracker-done" hidden>Fechar</button>
-      </div>
-    </section>
+        <p id="checkout-error" class="form-error" role="alert" hidden></p>
+        <button type="submit" class="button primary block" id="checkout-submit">Comprar ingressos</button>
+      </form>
+
+      <section id="tracker" aria-live="polite" hidden>
+        <div class="tracker-status">
+          <span class="pulse" id="tracker-pulse"></span>
+          <div>
+            <h3 id="tracker-title"></h3>
+            <p id="tracker-detail" class="muted"></p>
+          </div>
+        </div>
+        <div id="tracker-stepper"></div>
+        <ol id="tracker-steps" class="steps"></ol>
+        <div class="dialog-actions">
+          <a class="button" href="orders.html#tracking">Acompanhar processamento</a>
+          <button type="button" class="button primary" id="tracker-done" hidden>Fechar</button>
+        </div>
+      </section>
+    </div>
+    </div>
   </dialog>
 
   <footer class="footer" id="app-footer"></footer>

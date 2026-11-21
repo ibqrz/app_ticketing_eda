@@ -16,7 +16,7 @@ export function ticketCard(ticket, onBuy) {
     h(
       "div",
       { class: "cover-wrap" },
-      cover(ticket.id, ticket.image),
+      cover(ticket.image),
       h(
         "div",
         { class: "date-badge" },
@@ -28,7 +28,11 @@ export function ticketCard(ticket, onBuy) {
     h(
       "div",
       { class: "card-body" },
-      h("h3", { class: "card-title" }, ticket.name),
+      h(
+        "h3",
+        { class: "card-title" },
+        h("button", { type: "button", class: "card-open", onclick: () => onBuy(ticket) }, ticket.name),
+      ),
       meta("calendar", `${when(ticket.dt_event)}, vendas até ${until(ticket.sales_end)}`),
       meta("pin", ticket.location),
       meta("building", `Organizado por ${ticket.organizer}`),

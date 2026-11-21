@@ -1,7 +1,7 @@
 import { listOrders } from "../api/orders.js";
 import { listTickets } from "../api/tickets.js";
 import { config } from "../config.js";
-import { goLogin, isLogged } from "../state/session.js";
+import { isLogged } from "../state/session.js";
 import { mountCarousel } from "../ui/carousel.js";
 import { openCheckout } from "../ui/checkout.js";
 import { empty, find, h } from "../ui/dom.js";
@@ -10,17 +10,13 @@ import { orderRow } from "../ui/orderRow.js";
 import { ticketCard } from "../ui/ticketCard.js";
 import { toast } from "../ui/toast.js";
 
-renderLayout("home");
+renderLayout("home", "Ingressos");
 
 const events = find("#events");
 const list = find("#orders-list");
 const more = find("#orders-more");
 
 function buy(ticket) {
-  if (!isLogged()) {
-    goLogin();
-    return;
-  }
   openCheckout(ticket, refresh);
 }
 
