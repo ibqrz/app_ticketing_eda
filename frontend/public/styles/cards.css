@@ -441,7 +441,8 @@
 }
 
 .ticket-card,
-.order-card {
+.order-card,
+.row-card {
   cursor: pointer;
 }
 
@@ -449,4 +450,8 @@
   .cover.banner {
     aspect-ratio: 16 / 9;
   }
+}
+
+#active-block {
+  margin-bottom: 30px;
 }

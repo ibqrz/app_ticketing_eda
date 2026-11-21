@@ -38,7 +38,7 @@ export function detail(ticket) {
 
 export function orderInfo(order) {
   return [
-    h("div", { class: "order-head" }, h("h2", { id: "checkout-title" }, order.ticket_name), statePill(order)),
+    h("div", { class: "order-head" }, h("h2", { id: "order-title" }, order.ticket_name), statePill(order)),
     h(
       "div",
       { class: "checkout-details" },

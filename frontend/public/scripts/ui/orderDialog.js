@@ -10,7 +10,7 @@ import { toast } from "./toast.js";
 
 const nodes = {
   dialog: find("#order-dialog"),
-  scroll: find(".checkout-scroll"),
+  scroll: find("#order-dialog .checkout-scroll"),
   banner: find("#order-banner"),
   info: find("#order-info"),
   status: find("#order-status"),

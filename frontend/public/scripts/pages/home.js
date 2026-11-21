@@ -6,6 +6,7 @@ import { mountCarousel } from "../ui/carousel.js";
 import { openCheckout } from "../ui/checkout.js";
 import { empty, find, h } from "../ui/dom.js";
 import { renderLayout } from "../ui/layout.js";
+import { openOrder } from "../ui/orderDialog.js";
 import { orderRow } from "../ui/orderRow.js";
 import { ticketCard } from "../ui/ticketCard.js";
 import { toast } from "../ui/toast.js";
@@ -16,9 +17,13 @@ const events = find("#events");
 const list = find("#orders-list");
 const more = find("#orders-more");
 
+const open = (order) => openOrder(order, refresh);
+
 function buy(ticket) {
   openCheckout(ticket, refresh);
 }
+
+let last = "";
 
 async function loadTickets(quiet = false) {
   try {
@@ -27,6 +32,11 @@ async function loadTickets(quiet = false) {
       events.replaceChildren(empty("Nenhum evento encontrado"));
       return;
     }
+    const text = JSON.stringify(tickets);
+    if (text === last && events.querySelector(".carousel")) {
+      return;
+    }
+    last = text;
     mountCarousel(events, tickets.map((ticket) => ticketCard(ticket, buy)));
   } catch (error) {
     if (!quiet) {
@@ -56,7 +66,7 @@ async function loadOrders(quiet = false) {
     if (orders.length === 0) {
       list.replaceChildren(empty("Nenhum ingresso comprado"));
     } else {
-      list.replaceChildren(...orders.slice(0, config.homeOrders).map(orderRow));
+      list.replaceChildren(...orders.slice(0, config.homeOrders).map((order) => orderRow(order, open)));
     }
     more.hidden = orders.length <= config.homeOrders;
   } catch (error) {

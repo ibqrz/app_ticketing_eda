@@ -10,7 +10,7 @@ import { headline, stepper } from "./progress.js";
 const nodes = {
   dialog: find("#checkout"),
   form: find("#checkout-form"),
-  scroll: find(".checkout-scroll"),
+  scroll: find("#checkout .checkout-scroll"),
   banner: find("#checkout-banner"),
   info: find("#checkout-info"),
   notice: find("#checkout-notice"),
