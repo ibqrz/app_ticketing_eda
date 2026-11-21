@@ -13,6 +13,7 @@ class Settings:
         self.prefetch = int(os.getenv("PREFETCH_COUNT", "1"))
         self.sold_out_ttl_hours = float(os.getenv("SOLD_OUT_TTL_HOURS", "24"))
         self.session_days = int(os.getenv("SESSION_DAYS", "7"))
+        self.attachments_dir = os.getenv("ATTACHMENTS_DIR", "/app/attachmentsProcess")
         self.cors_origins = [
             origin.strip()
             for origin in os.getenv("CORS_ORIGINS", "http://localhost:8080").split(",")

@@ -3,7 +3,9 @@ import { config } from "../config.js";
 import { goLogin, isLogged } from "../state/session.js";
 import { empty, find } from "../ui/dom.js";
 import { renderLayout } from "../ui/layout.js";
+import { isLive } from "../ui/format.js";
 import { orderCard } from "../ui/orderCard.js";
+import { openOrder } from "../ui/orderDialog.js";
 import { progressCard } from "../ui/progress.js";
 import { toast } from "../ui/toast.js";
 
@@ -15,6 +17,8 @@ const tabs = {
 };
 
 const snapshot = {};
+
+const open = (order) => openOrder(order, () => load(true));
 
 function select(name) {
   for (const [key, item] of Object.entries(tabs)) {
@@ -45,7 +49,7 @@ function fill(grid, orders, text) {
     grid.replaceChildren(empty(text));
     return;
   }
-  grid.replaceChildren(...orders.map(orderCard));
+  grid.replaceChildren(...orders.map((order) => orderCard(order, open)));
 }
 
 function renderPurchased(orders) {
@@ -55,8 +59,8 @@ function renderPurchased(orders) {
   find("#orders-empty").replaceChildren(...(none ? [empty("Nenhum ingresso comprado")] : []));
   find("#active-block").hidden = none;
   find("#inactive-block").hidden = none;
-  fill(find("#grid-active"), orders.filter((order) => order.active), "Nenhum ingresso ativo");
-  fill(find("#grid-inactive"), orders.filter((order) => !order.active), "Nenhum ingresso inativo");
+  fill(find("#grid-active"), orders.filter(isLive), "Nenhum ingresso ativo");
+  fill(find("#grid-inactive"), orders.filter((order) => !isLive(order)), "Nenhum ingresso inativo");
 }
 
 function renderTracking(orders) {

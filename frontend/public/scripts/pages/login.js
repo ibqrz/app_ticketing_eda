@@ -4,6 +4,7 @@ import { find } from "../ui/dom.js";
 import { mountFields } from "../ui/field.js";
 import { renderLayout } from "../ui/layout.js";
 import { mountRules } from "../ui/rules.js";
+import { mountValidation, validate } from "../ui/validate.js";
 
 renderLayout("login", "Entrar");
 mountFields();
@@ -32,7 +33,7 @@ function submit(name, action, read, check = () => null) {
     event.preventDefault();
     mode.error.hidden = true;
     try {
-      const problem = check();
+      const problem = validate(mode.form) ?? check();
       if (problem) {
         throw new Error(problem);
       }
@@ -48,6 +49,9 @@ function submit(name, action, read, check = () => null) {
 if (isLogged()) {
   location.href = destination();
 }
+
+mountValidation(modes.login.form);
+mountValidation(modes.register.form);
 
 modes.login.tab.addEventListener("click", () => select("login"));
 modes.register.tab.addEventListener("click", () => select("register"));

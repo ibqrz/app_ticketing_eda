@@ -2,7 +2,8 @@ from common.database import transaction
 
 COLUMNS = (
     "id::text AS id, ticket_id, ticket_name, ticket_type, quantity, total, "
-    "location, image, dt_event, active, status, stage, reason, processed_by, created_at"
+    "location, organizer, description, image, dt_event, active, status, stage, reason, "
+    "processed_by, refunded, created_at"
 )
 
 SCOPES = {

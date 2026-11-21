@@ -713,3 +713,106 @@
     grid-template-columns: 1fr;
   }
 }
+
+.field.invalid input,
+.field.invalid input:hover,
+.field.invalid input:focus {
+  border-color: var(--red);
+}
+
+.field.invalid input:focus {
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--red) 16%, transparent);
+}
+
+.field.float.invalid input + span {
+  color: var(--red);
+}
+
+.order-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.order-head h2 {
+  margin-bottom: 0;
+}
+
+.units {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.unit {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 16px;
+  border: 1.5px solid #c9d3e6;
+  border-radius: var(--radius-small);
+}
+
+.unit .icon {
+  flex: none;
+  color: var(--blue);
+}
+
+.unit-label {
+  flex: 1;
+  min-width: 0;
+}
+
+.unit-label strong {
+  display: block;
+}
+
+.unit-label small {
+  color: var(--muted);
+}
+
+.unit.is-refunded {
+  background: var(--gray-soft);
+  border-color: transparent;
+}
+
+.unit.is-refunded .icon {
+  color: var(--muted);
+}
+
+.unit-confirm {
+  display: flex;
+  gap: 8px;
+}
+
+.button.danger {
+  color: var(--red);
+  border-color: var(--red);
+}
+
+.button.danger:hover:not(:disabled) {
+  background: var(--red-soft);
+}
+
+.button.danger.fill {
+  background: var(--red);
+  color: #ffffff;
+}
+
+.button.danger.fill:hover:not(:disabled) {
+  background: #8a1c30;
+}
+
+@media (max-width: 560px) {
+  .unit {
+    flex-wrap: wrap;
+  }
+
+  .unit > :last-child {
+    margin-left: auto;
+  }
+}

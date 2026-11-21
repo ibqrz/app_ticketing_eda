@@ -5,7 +5,7 @@ from fastapi import APIRouter, Depends, Query
 
 from container import order_service
 from controllers.dependencies import current_user
-from schemas.orders import OrderAccepted, OrderCreate, OrderView
+from schemas.orders import OrderAccepted, OrderCreate, OrderView, RefundAccepted
 
 router = APIRouter(prefix="/api/orders", tags=["orders"])
 
@@ -27,3 +27,8 @@ def recent(
 @router.get("/{order_id}", response_model=OrderView)
 def find(order_id: UUID, user=Depends(current_user)):
     return order_service.find(user, str(order_id))
+
+
+@router.post("/{order_id}/refunds", response_model=RefundAccepted, status_code=202)
+def refund(order_id: UUID, user=Depends(current_user)):
+    return order_service.refund(user, str(order_id))

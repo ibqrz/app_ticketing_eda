@@ -1,6 +1,7 @@
 import logging
 
-from common.events import STOCK_RESERVED, STOCK_SOLD_OUT
+from common.errors import RejectedMessage
+from common.events import STOCK_RESERVED, STOCK_SOLD_OUT, TICKET_REFUNDED
 
 logger = logging.getLogger(__name__)
 
@@ -27,3 +28,13 @@ class InventoryService:
     def release(self, event):
         self.repository.release(event.order_id)
         logger.info("order %s stock released", event.order_id)
+
+    def refund(self, event):
+        status = self.repository.refund(event)
+        if status == "DENIED":
+            raise RejectedMessage(f"refund {event.refund_id} denied")
+        if status == "DUPLICATE":
+            logger.info("refund %s already processed", event.refund_id)
+            return
+        logger.info("refund %s stock returned", event.refund_id)
+        self.publisher.publish(TICKET_REFUNDED, event.to_dict())

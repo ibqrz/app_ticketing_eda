@@ -47,6 +47,16 @@ CREATE TABLE payments (
     processed_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
+CREATE TABLE refunds (
+    id UUID PRIMARY KEY,
+    order_id UUID NOT NULL REFERENCES orders (id),
+    user_id INTEGER NOT NULL REFERENCES users (id),
+    ticket_id INTEGER NOT NULL REFERENCES tickets (id),
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE INDEX refunds_order_idx ON refunds (order_id);
+
 CREATE TABLE notifications (
     id SERIAL PRIMARY KEY,
     order_id UUID NOT NULL,
@@ -69,6 +79,9 @@ SELECT
     o.created_at,
     t.info ->> 'name' AS ticket_name,
     t.info ->> 'location' AS location,
+    t.info ->> 'organizer' AS organizer,
+    t.info ->> 'description' AS description,
+    (SELECT count(*) FROM refunds f WHERE f.order_id = o.id)::int AS refunded,
     t.image,
     (t.info ->> 'dtEvent')::timestamptz AS dt_event,
     (t.info ->> 'dtEvent')::timestamptz > now() AS active,
@@ -94,10 +107,10 @@ LEFT JOIN payments p ON p.order_id = o.id;
 INSERT INTO tickets (info, image, available) VALUES
 (
     '{
-        "name": "Festival Horizonte de Rock",
-        "description": "Três palcos, quinze bandas e uma noite inteira de rock nacional ao ar livre.",
-        "organizer": "Horizonte Produções",
-        "location": "Arena Central, São Paulo",
+        "name": "Rock in Rio",
+        "description": "Um dos maiores festivais de música do mundo, com vários palcos, atrações nacionais e internacionais e dias inteiros de shows.",
+        "organizer": "Rock World",
+        "location": "Parque Olímpico, Rio de Janeiro",
         "dtCreated": "2026-10-01T12:00:00-03:00",
         "dtExpiration": "2027-03-20T20:00:00-03:00",
         "dtEvent": "2027-03-20T20:00:00-03:00",
@@ -111,10 +124,10 @@ INSERT INTO tickets (info, image, available) VALUES
 ),
 (
     '{
-        "name": "Noite do Stand-up Nacional",
-        "description": "Seis comediantes, um palco e muita risada em uma noite de humor sem filtro.",
-        "organizer": "Cia. do Riso",
-        "location": "Teatro Municipal, Rio de Janeiro",
+        "name": "Festival Risadaria",
+        "description": "Festival de humor com stand-up, espetáculos e conversas com nomes da comédia brasileira.",
+        "organizer": "Organização do Risadaria",
+        "location": "São Paulo, SP",
         "dtCreated": "2026-10-05T12:00:00-03:00",
         "dtExpiration": "2027-04-10T21:00:00-03:00",
         "dtEvent": "2027-04-10T21:00:00-03:00",
@@ -128,10 +141,10 @@ INSERT INTO tickets (info, image, available) VALUES
 ),
 (
     '{
-        "name": "Oficina de Fotografia Urbana",
-        "description": "Aprenda composição, luz natural e edição caminhando pelo centro da cidade com fotógrafos profissionais.",
-        "organizer": "Olhar Coletivo",
-        "location": "Espaço Criativo, Curitiba",
+        "name": "Paraty em Foco",
+        "description": "Festival internacional de fotografia com exposições, projeções, leituras de portfólio e oficinas nas ruas históricas de Paraty.",
+        "organizer": "Paraty em Foco",
+        "location": "Paraty, RJ",
         "dtCreated": "2026-10-12T12:00:00-03:00",
         "dtExpiration": "2027-05-08T09:00:00-03:00",
         "dtEvent": "2027-05-08T09:00:00-03:00",
@@ -144,10 +157,10 @@ INSERT INTO tickets (info, image, available) VALUES
 ),
 (
     '{
-        "name": "Feira Gastronômica Sabores do Brasil",
-        "description": "Mais de quarenta expositores com pratos regionais, show ao vivo e área infantil.",
-        "organizer": "Mesa Brasil Eventos",
-        "location": "Pavilhão das Nações, Salvador",
+        "name": "Festival de Gastronomia de Tiradentes",
+        "description": "Encontro de chefs e produtores da culinária mineira, com pratos típicos, oficinas e degustações na cidade histórica.",
+        "organizer": "Organização do festival",
+        "location": "Tiradentes, MG",
         "dtCreated": "2026-10-20T12:00:00-03:00",
         "dtExpiration": "2027-06-12T11:00:00-03:00",
         "dtEvent": "2027-06-12T11:00:00-03:00",
@@ -161,10 +174,10 @@ INSERT INTO tickets (info, image, available) VALUES
 ),
 (
     '{
-        "name": "Dev Summit Floripa",
-        "description": "Um dia de palestras e workshops sobre arquitetura de software, nuvem e dados.",
-        "organizer": "Comunidade Dev Sul",
-        "location": "Centro de Convenções, Florianópolis",
+        "name": "Web Summit Rio",
+        "description": "Conferência de tecnologia e inovação que reúne startups, investidores e grandes empresas do mundo todo.",
+        "organizer": "Web Summit",
+        "location": "Rio de Janeiro, RJ",
         "dtCreated": "2026-11-02T12:00:00-03:00",
         "dtExpiration": "2027-07-24T08:30:00-03:00",
         "dtEvent": "2027-07-24T08:30:00-03:00",

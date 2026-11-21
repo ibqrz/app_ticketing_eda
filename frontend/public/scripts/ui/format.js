@@ -47,3 +47,21 @@ export const until = (iso) => shortDate.format(new Date(iso));
 export const time = (iso) => clock.format(new Date(iso));
 
 export const reasonLabel = (reason) => REASON[reason] ?? "pagamento não concluído";
+
+export const remaining = (order) => order.quantity - (order.refunded ?? 0);
+
+export const isLive = (order) => order.active && remaining(order) > 0;
+
+export const paid = (order) =>
+  remaining(order) > 0
+    ? (Number(order.total) / order.quantity) * remaining(order)
+    : Number(order.total);
+
+export function countText(order) {
+  const left = remaining(order);
+  if (left === 0) {
+    return `${order.quantity} x ${order.ticket_type} (reembolsado)`;
+  }
+  const back = order.refunded ? ` · ${order.refunded} reembolsado${order.refunded > 1 ? "s" : ""}` : "";
+  return `${left} x ${order.ticket_type}${back}`;
+}

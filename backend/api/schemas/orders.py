@@ -24,6 +24,8 @@ class OrderView(BaseModel):
     quantity: int
     total: float
     location: Optional[str] = None
+    organizer: Optional[str] = None
+    description: Optional[str] = None
     image: Optional[str] = None
     dt_event: datetime
     active: bool
@@ -32,4 +34,11 @@ class OrderView(BaseModel):
     reason: Optional[str] = None
     processed_by: Optional[str] = None
     created_at: datetime
+    refunded: int = 0
     notifications: list[str] = []
+
+
+class RefundAccepted(BaseModel):
+    refund_id: str
+    status: str
+    message: str

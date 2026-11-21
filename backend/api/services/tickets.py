@@ -31,8 +31,9 @@ def is_listed(row, now):
 
 
 class TicketService:
-    def __init__(self, repository):
+    def __init__(self, repository, attachments):
         self.repository = repository
+        self.attachments = attachments
 
     def listing(self):
         now = datetime.now(timezone.utc)
@@ -54,7 +55,7 @@ class TicketService:
             "sales_end": closes_at(info),
             "types": info.get("types", []),
             "available": row["available"],
-            "image": row["image"],
+            "image": self.attachments.url(row["id"]) or row["image"],
             "status": now < moment(info, "dtEvent"),
             "open": is_open(row, now),
             "sold_out": row["available"] == 0,

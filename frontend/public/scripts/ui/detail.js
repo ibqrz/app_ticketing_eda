@@ -1,6 +1,7 @@
 import { h } from "./dom.js";
-import { until, when } from "./format.js";
+import { money, until, when } from "./format.js";
 import { icon } from "./icons.js";
+import { statePill } from "./orderRow.js";
 
 function item(name, label, text) {
   return h(
@@ -31,6 +32,27 @@ export function detail(ticket) {
         item("ticket", "Disponibilidade", stock(ticket)),
       ),
       h("p", { class: "checkout-text" }, ticket.description),
+    ),
+  ];
+}
+
+export function orderInfo(order) {
+  return [
+    h("div", { class: "order-head" }, h("h2", { id: "checkout-title" }, order.ticket_name), statePill(order)),
+    h(
+      "div",
+      { class: "checkout-details" },
+      h(
+        "ul",
+        { class: "info-grid" },
+        item("calendar", "Data do evento", when(order.dt_event)),
+        item("pin", "Local", order.location ?? "—"),
+        item("building", "Organizador", order.organizer ?? "—"),
+        item("ticket", "Tipo de ingresso", order.ticket_type),
+        item("ticket", "Pedido", `#${order.id.slice(0, 8)}`),
+        item("ticket", "Total do pedido", money(order.total)),
+      ),
+      order.description ? h("p", { class: "checkout-text" }, order.description) : null,
     ),
   ];
 }

@@ -55,6 +55,8 @@ services:
       context: ./backend
       dockerfile: api/Dockerfile
     environment: *app-env
+    volumes:
+      - ./attachmentsProcess:/app/attachmentsProcess:ro
     ports:
       - "8000:8000"
     depends_on: *depends

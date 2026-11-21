@@ -440,7 +440,8 @@
   z-index: 3;
 }
 
-.ticket-card {
+.ticket-card,
+.order-card {
   cursor: pointer;
 }
 
