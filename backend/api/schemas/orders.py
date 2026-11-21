@@ -7,7 +7,7 @@ from pydantic import BaseModel, Field
 class OrderCreate(BaseModel):
     ticket_id: int = Field(gt=0)
     ticket_type: str = Field(min_length=1, max_length=80)
-    quantity: int = Field(ge=1, le=20)
+    quantity: int = Field(ge=1, le=200)
 
 
 class OrderAccepted(BaseModel):
