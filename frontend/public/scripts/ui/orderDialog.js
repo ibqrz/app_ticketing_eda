@@ -98,7 +98,7 @@ function poll(before, attempt = 0) {
     const order = await getOrder(current.id).catch(() => null);
     if (order && order.refunded > before) {
       finish(order, null);
-      toast("Ingresso reembolsado. Ele voltou para o estoque.");
+      toast("Ingresso reembolsado com sucesso.");
       return;
     }
     if (attempt + 1 >= config.pollMax) {
