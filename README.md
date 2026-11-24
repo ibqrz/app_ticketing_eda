@@ -1,4 +1,4 @@
-# Voucher: venda de ingressos com arquitetura orientada a eventos
+# Voucher
 
 Sistema de venda de ingressos (estilo Sympla) construído para a disciplina de Programação Distribuída, Paralela e Concorrente. A API recebe o pedido, publica um evento no RabbitMQ e responde na hora. Três microsserviços (Inventário, Pagamento e Notificação) processam o pedido de forma independente, por coreografia de eventos.
 
