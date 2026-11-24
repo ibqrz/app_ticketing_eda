@@ -425,7 +425,7 @@ A documentação interativa completa está em http://localhost:8000/docs.
 
 ## Colaboradores
 
-Gabriel Fernando da Silva | 2402135
+Gabriel Fernando da Silva | 2402134
 
 Giovana Pereira Gustavo | 2400539
 
