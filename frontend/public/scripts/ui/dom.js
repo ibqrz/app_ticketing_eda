@@ -19,3 +19,7 @@ export function h(tag, props = {}, ...children) {
   }
   return node;
 }
+
+export const find = (selector) => document.querySelector(selector);
+
+export const empty = (text) => h("span", { class: "empty" }, text);

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Voucher | Minha conta</title>
+  <link rel="icon" href="assets/voucher.ico" type="image/x-icon">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Raleway:wght@600;700;800&display=swap">
+  <link rel="stylesheet" href="styles/tokens.css">
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="styles/layout.css">
+  <link rel="stylesheet" href="styles/components.css">
+  <link rel="stylesheet" href="styles/cards.css">
+</head>
+<body>
+  <a class="skip" href="#content">Ir para o conteúdo</a>
+  <header class="topbar" id="app-header"></header>
+
+  <main id="content" class="wrap section">
+    <div class="page-head">
+      <h1>Minha conta</h1>
+      <p class="muted" id="account-stats"></p>
+    </div>
+
+    <div class="account-grid">
+      <section class="panel" aria-labelledby="profile-title">
+        <h2 id="profile-title">Dados pessoais</h2>
+        <p class="muted">Altere seu nome e e-mail de acesso.</p>
+        <form id="profile-form">
+          <label class="field float">
+            <input type="text" name="name" minlength="2" maxlength="120" autocomplete="name" placeholder=" " required>
+            <span>Nome</span>
+          </label>
+          <label class="field float">
+            <input type="email" name="email" autocomplete="email" placeholder=" " required>
+            <span>E-mail</span>
+          </label>
+          <p id="profile-error" class="form-error" role="alert" hidden></p>
+          <p id="profile-success" class="form-success" role="status" hidden></p>
+          <button type="submit" class="button primary block">Salvar alterações</button>
+        </form>
+      </section>
+
+      <section class="panel" aria-labelledby="password-title">
+        <h2 id="password-title">Senha</h2>
+        <p class="muted">Atualize sua senha de acesso.</p>
+        <form id="password-form">
+          <label class="field float">
+            <input type="password" name="current_password" autocomplete="current-password" placeholder=" " required>
+            <span>Senha atual</span>
+          </label>
+          <label class="field float">
+            <input type="password" name="new_password" minlength="8" maxlength="128" autocomplete="new-password" placeholder=" " required>
+            <span>Nova senha</span>
+          </label>
+          <ul class="rules" id="password-rules" aria-label="Requisitos da senha"></ul>
+          <label class="field float">
+            <input type="password" name="confirm_password" minlength="8" maxlength="128" autocomplete="new-password" placeholder=" " required>
+            <span>Confirmar nova senha</span>
+          </label>
+          <p id="password-error" class="form-error" role="alert" hidden></p>
+          <p id="password-success" class="form-success" role="status" hidden></p>
+          <button type="submit" class="button primary block">Atualizar senha</button>
+        </form>
+      </section>
+    </div>
+  </main>
+
+  <footer class="footer" id="app-footer"></footer>
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  <script type="module" src="scripts/pages/account.js"></script>
+</body>
+</html>

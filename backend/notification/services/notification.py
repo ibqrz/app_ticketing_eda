@@ -1,7 +1,7 @@
 import logging
 
 from common.config import settings
-from common.events import ORDER_CREATED, PAYMENT_APPROVED
+from common.events import ORDER_CREATED, PAYMENT_APPROVED, TICKET_REFUNDED
 
 logger = logging.getLogger(__name__)
 
@@ -17,15 +17,25 @@ class NotificationService:
 
     def notify(self, key, event):
         message = self.compose(key, event)
-        self.repository.save(event.order_id, key, message)
+        self.repository.save(event.order_id, self.kind(key, event), message)
         logger.info("email to %s: %s", event.customer_email, message)
+
+    def kind(self, key, event):
+        return f"{key}:{event.refund_id}" if key == TICKET_REFUNDED else key
 
     def compose(self, key, event):
         name = event.customer_name
+        if key == TICKET_REFUNDED:
+            value = f"R$ {event.amount:.2f}".replace(".", ",")
+            return (
+                f"Reembolso concluído, {name}: 1 ingresso {event.ticket_type} "
+                f"devolvido ({value})."
+            )
         if key == ORDER_CREATED:
             return (
                 f"Olá, {name}! Recebemos seu pedido de {event.quantity} "
-                f"ingresso(s) no {settings.project_name} e já estamos processando."
+                f"ingresso(s) {event.ticket_type} no {settings.project_name} "
+                f"e já estamos processando."
             )
         if key == PAYMENT_APPROVED:
             return f"Pagamento aprovado, {name}! Seus ingressos estão confirmados."

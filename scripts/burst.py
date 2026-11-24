@@ -7,34 +7,46 @@ from collections import Counter
 parser = argparse.ArgumentParser()
 parser.add_argument("--count", type=int, default=10)
 parser.add_argument("--ticket", type=int, default=1)
+parser.add_argument("--type", default="Pista")
 parser.add_argument("--quantity", type=int, default=1)
 parser.add_argument("--url", default="http://localhost:8000")
 parser.add_argument("--wait", type=int, default=90)
 args = parser.parse_args()
 
 
-def call(path, payload=None):
+def call(path, payload=None, token=None):
+    headers = {"Content-Type": "application/json"}
+    if token:
+        headers["Authorization"] = f"Bearer {token}"
     data = json.dumps(payload).encode() if payload is not None else None
     request = urllib.request.Request(
         args.url + path,
         data=data,
-        headers={"Content-Type": "application/json"},
+        headers=headers,
         method="POST" if payload is not None else "GET",
     )
     with urllib.request.urlopen(request, timeout=15) as response:
         return json.load(response)
 
 
+stamp = int(time.time())
+session = call(
+    "/api/auth/register",
+    {
+        "name": f"Cliente Rajada {stamp}",
+        "email": f"rajada{stamp}@exemplo.com.br",
+        "password": "senha-rajada-123",
+    },
+)
+token = session["token"]
+print("usuario criado:", session["user"]["email"])
+
 ids = set()
 for index in range(1, args.count + 1):
     result = call(
         "/api/orders",
-        {
-            "ticket_type_id": args.ticket,
-            "quantity": args.quantity,
-            "customer_name": f"Cliente {index}",
-            "customer_email": f"cliente{index}@exemplo.com.br",
-        },
+        {"ticket_id": args.ticket, "ticket_type": args.type, "quantity": args.quantity},
+        token,
     )
     ids.add(result["order_id"])
     print(f"pedido {index} aceito: {result['order_id']} ({result['message']})")
@@ -42,8 +54,9 @@ for index in range(1, args.count + 1):
 deadline = time.time() + args.wait
 orders = []
 while time.time() < deadline:
-    recent = call(f"/api/orders?limit={min(max(args.count, 1), 50)}")
-    orders = [order for order in recent if order["id"] in ids]
+    found = call("/api/orders?scope=purchased&limit=100", token=token)
+    found += call("/api/orders?scope=tracking&limit=100", token=token)
+    orders = [order for order in found if order["id"] in ids]
     if len(orders) == len(ids) and all(o["status"] != "PROCESSING" for o in orders):
         break
     time.sleep(1)

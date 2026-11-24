@@ -1,38 +1,67 @@
+const zone = "America/Sao_Paulo";
+
 const currency = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
 
-const dayFormat = new Intl.DateTimeFormat("pt-BR", {
-  weekday: "long",
+const full = new Intl.DateTimeFormat("pt-BR", {
+  weekday: "short",
   day: "numeric",
-  month: "long",
+  month: "short",
   hour: "2-digit",
   minute: "2-digit",
-  timeZone: "America/Sao_Paulo",
+  timeZone: zone,
 });
 
-const timeFormat = new Intl.DateTimeFormat("pt-BR", {
+const dayOnly = new Intl.DateTimeFormat("pt-BR", { day: "2-digit", timeZone: zone });
+
+const monthOnly = new Intl.DateTimeFormat("pt-BR", { month: "short", timeZone: zone });
+
+const shortDate = new Intl.DateTimeFormat("pt-BR", {
+  day: "2-digit",
+  month: "2-digit",
+  year: "numeric",
+  timeZone: zone,
+});
+
+const clock = new Intl.DateTimeFormat("pt-BR", {
   hour: "2-digit",
   minute: "2-digit",
   second: "2-digit",
-  timeZone: "America/Sao_Paulo",
+  timeZone: zone,
 });
 
-const STATUS = {
-  PROCESSING: "Em processamento",
-  CONFIRMED: "Confirmado",
-  REFUSED: "Recusado",
-};
-
 const REASON = {
-  LIMIT_EXCEEDED: "Valor acima do limite permitido",
-  SOLD_OUT: "Ingressos esgotados",
+  LIMIT_EXCEEDED: "valor acima do limite permitido",
+  SOLD_OUT: "ingressos esgotados",
 };
 
 export const money = (value) => currency.format(Number(value));
 
-export const day = (iso) => dayFormat.format(new Date(iso));
+export const when = (iso) => full.format(new Date(iso));
 
-export const time = (iso) => timeFormat.format(new Date(iso));
+export const dayNumber = (iso) => dayOnly.format(new Date(iso));
 
-export const statusLabel = (status) => STATUS[status] ?? status;
+export const monthShort = (iso) => monthOnly.format(new Date(iso)).replace(".", "");
 
-export const reasonLabel = (reason) => REASON[reason] ?? "Pagamento não concluído";
+export const until = (iso) => shortDate.format(new Date(iso));
+
+export const time = (iso) => clock.format(new Date(iso));
+
+export const reasonLabel = (reason) => REASON[reason] ?? "pagamento não concluído";
+
+export const remaining = (order) => order.quantity - (order.refunded ?? 0);
+
+export const isLive = (order) => order.active && remaining(order) > 0;
+
+export const paid = (order) =>
+  remaining(order) > 0
+    ? (Number(order.total) / order.quantity) * remaining(order)
+    : Number(order.total);
+
+export function countText(order) {
+  const left = remaining(order);
+  if (left === 0) {
+    return `${order.quantity} x ${order.ticket_type} (reembolsado)`;
+  }
+  const back = order.refunded ? ` · ${order.refunded} reembolsado${order.refunded > 1 ? "s" : ""}` : "";
+  return `${left} x ${order.ticket_type}${back}`;
+}

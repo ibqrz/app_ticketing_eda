@@ -3,112 +3,108 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>[nome do projeto]</title>
-  <link rel="icon" href="assets/logo-placeholder.svg" type="image/svg+xml">
+  <title>Voucher | Ingressos</title>
+  <link rel="icon" href="assets/voucher.ico" type="image/x-icon">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Raleway:wght@600;700;800&display=swap">
   <link rel="stylesheet" href="styles/tokens.css">
   <link rel="stylesheet" href="styles/base.css">
   <link rel="stylesheet" href="styles/layout.css">
   <link rel="stylesheet" href="styles/components.css">
+  <link rel="stylesheet" href="styles/cards.css">
 </head>
 <body>
-  <a class="skip" href="#events">Ir para os eventos</a>
+  <a class="skip" href="#content">Ir para o conteúdo</a>
+  <header class="topbar" id="app-header"></header>
 
-  <header class="topbar">
-    <div class="wrap topbar-inner">
-      <a class="brand" href="#top">
-        <img class="brand-logo" data-brand-logo src="assets/logo-placeholder.svg" alt="[logo do projeto]" width="40" height="40">
-        <span class="brand-name" data-brand-name>[nome do projeto]</span>
-      </a>
-      <nav class="nav" aria-label="Principal">
-        <a href="#events">Eventos</a>
-        <a href="#orders">Pedidos recentes</a>
-      </nav>
-    </div>
-  </header>
-
-  <main id="top">
+  <main id="content">
     <section class="hero wrap">
       <h1>Garanta seu lugar no próximo evento</h1>
-      <p class="lead">Escolha o ingresso, finalize a compra e acompanhe cada etapa do pedido enquanto ele é processado.</p>
     </section>
 
-    <section id="events" class="wrap section" aria-labelledby="events-title">
-      <h2 id="events-title">Eventos em cartaz</h2>
-      <div id="catalog" class="catalog" aria-live="polite"></div>
-    </section>
-
-    <section id="orders" class="wrap section" aria-labelledby="orders-title">
-      <h2 id="orders-title">Pedidos recentes</h2>
-      <div class="table-scroll">
-        <table class="orders">
-          <thead>
-            <tr>
-              <th scope="col">Pedido</th>
-              <th scope="col">Ingresso</th>
-              <th scope="col">Total</th>
-              <th scope="col">Situação</th>
-              <th scope="col">Pagamento processado por</th>
-              <th scope="col">Horário</th>
-            </tr>
-          </thead>
-          <tbody id="orders-body"></tbody>
-        </table>
+    <section class="wrap wide section" aria-labelledby="events-title">
+      <div class="section-head">
+        <h2 id="events-title">Eventos disponíveis</h2>
       </div>
-      <p id="orders-empty" class="empty" hidden>Nenhum pedido ainda. Escolha um ingresso acima para começar.</p>
+      <div id="events"></div>
+    </section>
+
+    <hr class="divider">
+
+    <section class="wrap narrow section" aria-labelledby="orders-title">
+      <div class="section-head">
+        <h2 id="orders-title">Meus ingressos</h2>
+      </div>
+      <div id="orders-list" class="row-list"></div>
+      <div id="orders-more" class="dialog-actions" hidden>
+        <a class="button" href="orders.html">Ver todos meus pedidos</a>
+      </div>
     </section>
   </main>
 
-  <footer class="footer">
-    <div class="wrap">
-      <span data-brand-name>[nome do projeto]</span>
-    </div>
-  </footer>
-
   <dialog id="checkout" class="checkout" aria-labelledby="checkout-title">
-    <div class="checkout-head">
-      <div>
-        <h2 id="checkout-title">Finalizar compra</h2>
-        <p id="checkout-summary" class="muted"></p>
-      </div>
-      <button type="button" class="icon-button" id="checkout-close" aria-label="Fechar">&times;</button>
-    </div>
+    <button type="button" class="checkout-close" id="checkout-close" aria-label="Fechar">&times;</button>
+    <div class="checkout-scroll">
+    <div id="checkout-banner"></div>
 
-    <form id="checkout-form">
-      <label class="field">
-        <span>Quantidade</span>
-        <input type="number" name="quantity" min="1" max="20" value="1" required>
-      </label>
-      <label class="field">
-        <span>Nome completo</span>
-        <input type="text" name="customer_name" minlength="2" maxlength="120" autocomplete="name" required>
-      </label>
-      <label class="field">
-        <span>E-mail</span>
-        <input type="email" name="customer_email" autocomplete="email" placeholder="voce@exemplo.com.br" required>
-      </label>
-      <div class="total-row">
-        <span>Total</span>
-        <strong id="checkout-total">R$ 0,00</strong>
-      </div>
-      <p id="checkout-error" class="form-error" role="alert" hidden></p>
-      <button type="submit" class="button primary block" id="checkout-submit">Comprar ingressos</button>
-    </form>
+    <div class="checkout-body">
+      <div id="checkout-info"></div>
 
-    <section id="tracker" class="tracker" aria-live="polite" hidden>
-      <div class="tracker-status">
-        <span class="pulse" id="tracker-pulse"></span>
-        <div>
-          <h3 id="tracker-title"></h3>
-          <p id="tracker-detail" class="muted"></p>
+      <form id="checkout-form">
+        <h3 class="checkout-subtitle">Adquirir ingresso</h3>
+        <p id="checkout-notice" class="checkout-notice" role="status" hidden></p>
+        <fieldset class="types" id="checkout-types">
+          <legend>Tipo de ingresso</legend>
+        </fieldset>
+        <label class="field">
+          <span>Quantidade</span>
+          <input type="number" name="quantity" min="1" max="200" value="1" required>
+        </label>
+        <div class="total-row">
+          <span>Total</span>
+          <strong id="checkout-total">R$ 0,00</strong>
         </div>
-      </div>
-      <ol id="tracker-steps" class="steps"></ol>
-      <button type="button" class="button block" id="tracker-done" hidden>Fechar</button>
-    </section>
+        <p id="checkout-error" class="form-error" role="alert" hidden></p>
+        <button type="submit" class="button primary block" id="checkout-submit">Comprar ingressos</button>
+      </form>
+
+      <section id="tracker" aria-live="polite" hidden>
+        <div class="tracker-status">
+          <span class="pulse" id="tracker-pulse"></span>
+          <div>
+            <h3 id="tracker-title"></h3>
+            <p id="tracker-detail" class="muted"></p>
+          </div>
+        </div>
+        <div id="tracker-stepper"></div>
+        <ol id="tracker-steps" class="steps"></ol>
+        <div class="dialog-actions">
+          <a class="button" href="orders.html#tracking">Acompanhar processamento</a>
+          <button type="button" class="button primary" id="tracker-done" hidden>Fechar</button>
+        </div>
+      </section>
+    </div>
+    </div>
   </dialog>
 
-  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  <dialog id="order-dialog" class="checkout" aria-labelledby="order-title">
+    <button type="button" class="checkout-close" id="order-close" aria-label="Fechar">&times;</button>
+    <div class="checkout-scroll">
+      <div id="order-banner"></div>
+      <div class="checkout-body">
+        <div id="order-info"></div>
+        <section>
+          <h3 class="checkout-subtitle">Seus ingressos</h3>
+          <p id="order-status" class="checkout-notice" role="status" hidden></p>
+          <ul class="units" id="order-units"></ul>
+        </section>
+      </div>
+    </div>
+  </dialog>
 
-  <script type="module" src="scripts/main.js"></script>
+  <footer class="footer" id="app-footer"></footer>
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  <script type="module" src="scripts/pages/home.js"></script>
 </body>
 </html>

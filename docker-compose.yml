@@ -7,6 +7,8 @@ x-app-env: &app-env
   PAYMENT_LIMIT: ${PAYMENT_LIMIT}
   PROCESSING_DELAY: ${PROCESSING_DELAY}
   PREFETCH_COUNT: ${PREFETCH_COUNT}
+  SOLD_OUT_TTL_HOURS: ${SOLD_OUT_TTL_HOURS}
+  SESSION_DAYS: ${SESSION_DAYS}
   CORS_ORIGINS: ${CORS_ORIGINS}
 
 x-depends: &depends
@@ -53,6 +55,8 @@ services:
       context: ./backend
       dockerfile: api/Dockerfile
     environment: *app-env
+    volumes:
+      - ./attachmentsProcess:/app/attachmentsProcess:ro
     ports:
       - "8000:8000"
     depends_on: *depends
@@ -95,6 +99,7 @@ services:
     image: nginx:1.27-alpine
     volumes:
       - ./frontend/public:/usr/share/nginx/html:ro
+      - ./infra/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
     ports:
       - "8080:80"
     depends_on:

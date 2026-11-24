@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Voucher | Entrar</title>
+  <link rel="icon" href="assets/voucher.ico" type="image/x-icon">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Raleway:wght@600;700;800&display=swap">
+  <link rel="stylesheet" href="styles/tokens.css">
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="styles/layout.css">
+  <link rel="stylesheet" href="styles/components.css">
+  <link rel="stylesheet" href="styles/cards.css">
+</head>
+<body>
+  <a class="skip" href="#content">Ir para o conteúdo</a>
+  <header class="topbar" id="app-header"></header>
+
+  <main id="content" class="wrap">
+    <div class="auth-wrap">
+      <h1>Acesse sua conta</h1>
+      <section class="panel">
+        <div class="segmented" role="tablist" aria-label="Acesso">
+          <button type="button" role="tab" id="mode-login" aria-selected="true">Entrar</button>
+          <button type="button" role="tab" id="mode-register" aria-selected="false">Criar conta</button>
+        </div>
+
+        <form id="login-form">
+          <label class="field float">
+            <input type="email" name="email" autocomplete="email" placeholder=" " required>
+            <span>E-mail</span>
+          </label>
+          <label class="field float">
+            <input type="password" name="password" autocomplete="current-password" placeholder=" " required>
+            <span>Senha</span>
+          </label>
+          <p id="login-error" class="form-error" role="alert" hidden></p>
+          <button type="submit" class="button primary block">Entrar</button>
+        </form>
+
+        <form id="register-form" hidden>
+          <label class="field float">
+            <input type="text" name="name" minlength="2" maxlength="120" autocomplete="name" placeholder=" " required>
+            <span>Nome</span>
+          </label>
+          <label class="field float">
+            <input type="email" name="email" autocomplete="email" placeholder=" " required>
+            <span>E-mail</span>
+          </label>
+          <label class="field float">
+            <input type="password" name="password" minlength="8" maxlength="128" autocomplete="new-password" placeholder=" " required>
+            <span>Senha</span>
+          </label>
+          <ul class="rules" id="register-rules" aria-label="Requisitos da senha"></ul>
+          <p id="register-error" class="form-error" role="alert" hidden></p>
+          <button type="submit" class="button primary block">Criar conta</button>
+        </form>
+      </section>
+    </div>
+  </main>
+
+  <footer class="footer" id="app-footer"></footer>
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  <script type="module" src="scripts/pages/login.js"></script>
+</body>
+</html>

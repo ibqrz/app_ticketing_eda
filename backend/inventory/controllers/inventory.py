@@ -1,5 +1,12 @@
 from common.errors import InvalidMessageError
-from common.events import ORDER_CREATED, PAYMENT_APPROVED, PAYMENT_REFUSED, OrderEvent
+from common.events import (
+    ORDER_CREATED,
+    PAYMENT_APPROVED,
+    PAYMENT_REFUSED,
+    TICKET_REFUND_REQUESTED,
+    OrderEvent,
+    RefundEvent,
+)
 
 
 class InventoryController:
@@ -7,6 +14,9 @@ class InventoryController:
         self.service = service
 
     def handle(self, key, payload):
+        if key == TICKET_REFUND_REQUESTED:
+            self.service.refund(RefundEvent.parse(payload))
+            return
         event = OrderEvent.parse(payload)
         if key == ORDER_CREATED:
             self.service.reserve(event)

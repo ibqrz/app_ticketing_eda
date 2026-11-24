@@ -1,0 +1,43 @@
+.lost {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding-block: 72px;
+  text-align: center;
+}
+
+.lost-code {
+  isolation: isolate;
+  position: relative;
+  color: var(--blue);
+  font-family: var(--font-display);
+  font-size: clamp(5rem, 22vw, 9rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.lost-code::after {
+  content: "";
+  position: absolute;
+  inset: auto 6% 8% 6%;
+  z-index: -1;
+  height: 28%;
+  background: var(--yellow);
+  border-radius: 999px;
+}
+
+.lost h1 {
+  max-width: 22ch;
+  font-size: var(--step-2);
+}
+
+.lost p.muted {
+  max-width: 44ch;
+}
+
+.lost .button {
+  margin-top: 8px;
+}
