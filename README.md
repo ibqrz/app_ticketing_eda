@@ -451,6 +451,9 @@ Para ver todos os logs: `docker compose logs -f`.
 ## Colaboradores
 
 Giovana Pereira Gustavo
+
 Gabriel Fernando da Silva
+
 Isabel Queiroz Almeida
+
 Luis Eduardo Boaretto Rigoni
