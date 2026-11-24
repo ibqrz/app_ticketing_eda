@@ -228,20 +228,209 @@ A documentação interativa completa está em http://localhost:8000/docs.
 
 ```
 .
-├── docker-compose.yml
-├── .env.example
-├── attachmentsProcess/     imagens dos eventos
-├── scripts/                atalhos de execução e teste
-├── infra/
-│   ├── postgres/init.sql   esquema e eventos de exemplo
-│   └── nginx/              configuração do frontend (página 404)
-├── backend/
-│   ├── common/             config, banco, eventos e mensageria compartilhados
-│   ├── api/                produtor HTTP (controllers, services, repositories)
-│   ├── inventory/          consumidor de estoque
-│   ├── payment/            consumidor de pagamento
-│   └── notification/       consumidor de notificações
-└── frontend/public/        HTML, CSS e JavaScript sem build
+│   .env
+│   .env.example
+│   .gitignore
+│   docker-compose.yml
+│   README.md
+│
+├───attachmentsProcess
+│       .gitkeep
+│       1.png
+│       2.png
+│       3.png
+│       4.png
+│       5.png
+│       README.md
+│
+├───backend
+│   │   .dockerignore
+│   │   Dockerfile.worker
+│   │
+│   ├───api
+│   │   │   container.py
+│   │   │   Dockerfile
+│   │   │   main.py
+│   │   │   requirements.txt
+│   │   │   security.py
+│   │   │
+│   │   ├───controllers
+│   │   │       account.py
+│   │   │       auth.py
+│   │   │       dependencies.py
+│   │   │       events.py
+│   │   │       health.py
+│   │   │       orders.py
+│   │   │       tickets.py
+│   │   │       __init__.py
+│   │   │
+│   │   ├───repositories
+│   │   │       events.py
+│   │   │       orders.py
+│   │   │       sessions.py
+│   │   │       tickets.py
+│   │   │       users.py
+│   │   │       __init__.py
+│   │   │
+│   │   ├───schemas
+│   │   │       account.py
+│   │   │       auth.py
+│   │   │       events.py
+│   │   │       orders.py
+│   │   │       tickets.py
+│   │   │       __init__.py
+│   │   │
+│   │   └───services
+│   │           account.py
+│   │           attachments.py
+│   │           auth.py
+│   │           events.py
+│   │           orders.py
+│   │           tickets.py
+│   │           __init__.py
+│   │
+│   ├───common
+│   │   │   config.py
+│   │   │   database.py
+│   │   │   errors.py
+│   │   │   events.py
+│   │   │   logger.py
+│   │   │   requirements.txt
+│   │   │   __init__.py
+│   │   │
+│   │   └───messaging
+│   │           connection.py
+│   │           consumer.py
+│   │           publisher.py
+│   │           topology.py
+│   │           __init__.py
+│   │
+│   ├───inventory
+│   │   │   inventory_service.py
+│   │   │
+│   │   ├───controllers
+│   │   │       inventory.py
+│   │   │       __init__.py
+│   │   │
+│   │   ├───repositories
+│   │   │       inventory.py
+│   │   │       __init__.py
+│   │   │
+│   │   └───services
+│   │           inventory.py
+│   │           __init__.py
+│   │
+│   ├───notification
+│   │   │   notification_service.py
+│   │   │
+│   │   ├───controllers
+│   │   │       notification.py
+│   │   │       __init__.py
+│   │   │
+│   │   ├───repositories
+│   │   │       notification.py
+│   │   │       __init__.py
+│   │   │
+│   │   └───services
+│   │           notification.py
+│   │           __init__.py
+│   │
+│   └───payment
+│       │   payment_service.py
+│       │
+│       ├───controllers
+│       │       payment.py
+│       │       __init__.py
+│       │
+│       ├───repositories
+│       │       payment.py
+│       │       __init__.py
+│       │
+│       └───services
+│               payment.py
+│               __init__.py
+│
+├───frontend
+│   └───public
+│       │   404.html
+│       │   account.html
+│       │   index.html
+│       │   login.html
+│       │   orders.html
+│       │
+│       ├───assets
+│       │       logo-placeholder.svg
+│       │       logo.png
+│       │       voucher.ico
+│       │
+│       ├───scripts
+│       │   │   config.js
+│       │   │   main.js
+│       │   │
+│       │   ├───api
+│       │   │       account.js
+│       │   │       auth.js
+│       │   │       events.js
+│       │   │       http.js
+│       │   │       orders.js
+│       │   │       tickets.js
+│       │   │
+│       │   ├───pages
+│       │   │       account.js
+│       │   │       home.js
+│       │   │       login.js
+│       │   │       orders.js
+│       │   │
+│       │   ├───state
+│       │   │       session.js
+│       │   │
+│       │   └───ui
+│       │           avatar.js
+│       │           brand.js
+│       │           carousel.js
+│       │           catalog.js
+│       │           checkout.js
+│       │           cover.js
+│       │           detail.js
+│       │           dom.js
+│       │           field.js
+│       │           format.js
+│       │           history.js
+│       │           icons.js
+│       │           layout.js
+│       │           orderCard.js
+│       │           orderDialog.js
+│       │           orderRow.js
+│       │           progress.js
+│       │           rules.js
+│       │           ticketCard.js
+│       │           toast.js
+│       │           validate.js
+│       │
+│       └───styles
+│               base.css
+│               cards.css
+│               components.css
+│               layout.css
+│               notfound.css
+│               tokens.css
+│
+├───infra
+│   ├───nginx
+│   │       default.conf
+│   │
+│   └───postgres
+│           init.sql
+│
+└───scripts
+        burst.py
+        burst.sh
+        reset.sh
+        scale.sh
+        send_invalid.py
+        send_invalid.sh
+        setup.sh
+        stop.sh
 ```
 
 Cada serviço segue as camadas controller, service e repository.
