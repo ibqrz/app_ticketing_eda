@@ -425,10 +425,10 @@ A documentação interativa completa está em http://localhost:8000/docs.
 
 ## Colaboradores
 
-Giovana Pereira Gustavo
+Gabriel Fernando da Silva | 2402135
 
-Gabriel Fernando da Silva
+Giovana Pereira Gustavo | 2400539
 
-Isabel Queiroz Almeida
+Isabel Queiroz Almeida | 2402805
 
-Luis Eduardo Boaretto Rigoni
+Luis Eduardo Boaretto Rigoni | 2404089
