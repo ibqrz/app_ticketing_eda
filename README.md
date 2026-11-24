@@ -20,7 +20,6 @@ Sistema de venda de ingressos (estilo Sympla) construído para a disciplina de P
 - [Imagens dos eventos](#imagens-dos-eventos)
 - [Endpoints principais](#endpoints-principais)
 - [Estrutura de pastas](#estrutura-de-pastas)
-- [Solução de problemas](#solução-de-problemas)
 - [Colaboradores](#colaboradores)
 
 ## O que o projeto demonstra
@@ -150,7 +149,7 @@ O arquivo `.env` não vai para o Git (está no `.gitignore`).
 2. A API responde na hora. Nos logs, o Inventário reserva, o Pagamento aprova após cerca de 4 s, o Inventário confirma e a Notificação registra os e-mails.
 3. O pedido aparece em Meus ingressos e o estoque do evento diminui.
 
-### Queda de serviço (etapa 4)
+### Queda de serviço 
 
 ```bash
 docker compose stop payment-service
@@ -164,7 +163,7 @@ docker compose start payment-service
 
 O Pagamento consome as mensagens retidas e os pedidos são aprovados sem novas ações.
 
-### Dead Letter Queue (etapa 4)
+### Dead Letter Queue 
 
 - **Erro de negócio:** compre 23 ingressos Camarote do Rock in Rio (23 x R$ 900,00 = R$ 20.700,00, acima do limite). O pagamento é recusado, o estoque volta, e a mensagem vai para `tickets.dlq`.
 - **Payload inválido:** publique uma mensagem quebrada.
@@ -175,7 +174,7 @@ O Pagamento consome as mensagens retidas e os pedidos são aprovados sem novas a
 
   No painel, abra Queues > `tickets.dlq` > Get messages. O cabeçalho `x-death` mostra a fila de origem e o motivo `rejected`.
 
-### Escalabilidade (etapa 5)
+### Escalabilidade 
 
 ```bash
 ./scripts/scale.sh 2
@@ -432,21 +431,6 @@ A documentação interativa completa está em http://localhost:8000/docs.
         setup.sh
         stop.sh
 ```
-
-Cada serviço segue as camadas controller, service e repository.
-
-## Solução de problemas
-
-| Sintoma | Causa e solução |
-|---|---|
-| `port is already allocated` ou erro 10013 | Outra aplicação usa a porta. A `8080` é do container do site, não rode outro servidor nela (por exemplo `python -m http.server`). Feche o que estiver usando a porta ou pare o container com `docker compose down` |
-| O site mostra dados antigos ou erros de coluna | O volume do banco é de uma versão anterior. Rode `docker compose down -v` e suba de novo |
-| Compra fica em "Processando" | O serviço de pagamento está parado ou ocupado. Veja `docker compose ps` e `docker compose logs -f payment-service` |
-| Imagens não aparecem | Confira os nomes em `attachmentsProcess/` (`1.png` a `5.png`) e atualize a página com Ctrl+F5 |
-| Mudança no frontend não aparece | Cache do navegador. Use Ctrl+F5 ou uma janela anônima |
-| Código do backend alterado, nada muda | O backend vai dentro da imagem. Rode `docker compose up -d --build` |
-
-Para ver todos os logs: `docker compose logs -f`.
 
 ## Colaboradores
 
