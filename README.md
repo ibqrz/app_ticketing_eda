@@ -34,22 +34,14 @@ Sistema de venda de ingressos (estilo Sympla) construído para a disciplina de P
 
 ## Arquitetura
 
-```mermaid
-flowchart LR
-    Web[Navegador<br/>nginx :8080] -->|HTTP| API[API FastAPI<br/>:8000]
-    API -->|order.created| EX{{tickets.events<br/>topic}}
-    EX --> IQ[inventory.queue] --> INV[Inventário]
-    EX --> PQ[payment.queue] --> PAY[Pagamento x N]
-    EX --> NQ[notification.queue] --> NOT[Notificação]
-    INV -->|stock.reserved / stock.sold_out| EX
-    PAY -->|payment.approved / payment.refused| EX
-    IQ -.nack.-> DLX{{tickets.dlx}} -.-> DLQ[tickets.dlq]
-    PQ -.nack.-> DLX
-    NQ -.nack.-> DLX
-    API --- DB[(PostgreSQL)]
-    INV --- DB
-    PAY --- DB
-    NOT --- DB
+```
+Navegador ──HTTP──▶ API ──▶ tickets.events (exchange)
+                                  │
+              ┌───────────────────┼───────────────────┐
+              ▼                   ▼                   ▼
+       inventory.queue      payment.queue     notification.queue
+              │                   │                   │
+         Inventário           Pagamento          Notificação
 ```
 
 Fluxo de uma compra:
