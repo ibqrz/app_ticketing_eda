@@ -116,7 +116,6 @@ Atalho: `scripts/setup.sh` faz os passos 2 e 3 e mostra os endereços.
 | Parar e **apagar banco e filas** | `docker compose down -v` |
 | Recriar do zero | `docker compose down -v` e depois `docker compose up -d --build` |
 
-O Postgres só lê `infra/postgres/init.sql` quando o volume é criado. Se você mudar o esquema ou os eventos de exemplo, precisa do `down -v`.
 
 ## Configuração (`.env`)
 
