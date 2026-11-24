@@ -12,9 +12,9 @@ Sistema de venda de ingressos (estilo Sympla) construído para a disciplina de P
 - [Configuração (`.env`)](#configuração-env)
 - [Roteiro de testes](#roteiro-de-testes)
   - [Fluxo normal](#fluxo-normal)
-  - [Queda de serviço (etapa 4)](#queda-de-serviço-etapa-4)
-  - [Dead Letter Queue (etapa 4)](#dead-letter-queue-etapa-4)
-  - [Escalabilidade (etapa 5)](#escalabilidade-etapa-5)
+  - [Queda de serviço](#queda-de-serviço)
+  - [Dead Letter Queue](#dead-letter-queue)
+  - [Escalabilidade](#escalabilidade)
   - [Reembolso](#reembolso)
 - [Scripts (`scripts/`)](#scripts-scripts)
 - [Imagens dos eventos](#imagens-dos-eventos)
@@ -93,7 +93,7 @@ Mapeamento de filas:
    docker compose up -d --build
    ```
 
-4. Confira se os 7 containers estão de pé (`postgres`, `rabbitmq`, `api`, `inventory-service`, `payment-service`, `notification-service` e `frontend`).
+4. Confira se os 7 containers estão de pé (`postgres`, `rabbitmq`, `api`, `inventory-service`, `payment-service`, `notification-service` e `frontend`). Depois do teste de escalabilidade (ver [Escalabilidade](#escalabilidade)), aparece um oitavo container: a segunda réplica do `payment-service`.
 
    ```bash
    docker compose ps
@@ -182,9 +182,9 @@ docker compose logs -f payment-service
 ./scripts/burst.sh --count 10
 ```
 
-O `scale.sh` sobe 2 réplicas do Pagamento (o argumento é o número de réplicas). O `burst.sh` cria um usuário, dispara a rajada de pedidos pela API, espera o processamento e imprime quantos pedidos cada réplica processou. Opções: `--count`, `--ticket`, `--type`, `--quantity`, `--wait`.
+O `scale.sh` sobe 2 réplicas do Pagamento (o argumento é o número de réplicas). Por isso, durante esse teste, o `docker compose ps` mostra 8 containers em vez de 7: a réplica extra divide o trabalho da fila `payment.queue` com a original. O `burst.sh` cria um usuário, dispara a rajada de pedidos pela API, espera o processamento e imprime quantos pedidos cada réplica processou. Opções: `--count`, `--ticket`, `--type`, `--quantity`, `--wait`.
 
-No painel, `payment.queue` passa a ter Consumers = 2.
+No painel, `payment.queue` passa a ter Consumers = 2. Para voltar a 7 containers depois do teste, rode `./scripts/scale.sh 1`.
 
 ### Reembolso
 
